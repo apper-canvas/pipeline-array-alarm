@@ -12,7 +12,8 @@ const [formData, setFormData] = useState({
     company_c: "",
     tags_c: "",
     notes_c: "",
-    photo_url_c: ""
+    photo_url_c: "",
+    science_marks_c: ""
   });
   
   const [errors, setErrors] = useState({});
@@ -27,7 +28,8 @@ setFormData({
         company_c: contact.company_c || "",
         tags_c: contact.tags_c || "",
         notes_c: contact.notes_c || "",
-        photo_url_c: contact.photo_url_c || ""
+        photo_url_c: contact.photo_url_c || "",
+        science_marks_c: contact.science_marks_c || ""
       });
     }
   }, [contact]);
@@ -51,22 +53,26 @@ setFormData({
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+if (!formData.name_c.trim()) {
+      newErrors.name_c = "Name is required";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
+    if (!formData.email_c.trim()) {
+      newErrors.email_c = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email_c)) {
+      newErrors.email_c = "Email is invalid";
     }
 
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone is required";
+    if (!formData.phone_c.trim()) {
+      newErrors.phone_c = "Phone is required";
     }
 
-    if (!formData.company.trim()) {
-      newErrors.company = "Company is required";
+    if (!formData.company_c.trim()) {
+      newErrors.company_c = "Company is required";
+    }
+
+    if (formData.science_marks_c && isNaN(formData.science_marks_c)) {
+      newErrors.science_marks_c = "Science marks must be a valid number";
     }
 
     setErrors(newErrors);
@@ -84,9 +90,10 @@ setFormData({
     setIsSubmitting(true);
 
     try {
-      const contactData = {
-...formData,
-        tags_c: formData.tags_c
+const contactData = {
+        ...formData,
+        tags_c: formData.tags_c,
+        science_marks_c: formData.science_marks_c ? parseInt(formData.science_marks_c) : null
       };
 
       await onSave(contactData);
@@ -100,47 +107,57 @@ setFormData({
 
 return (
     <form onSubmit={handleSubmit} className="space-y-6 pb-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Input
           label="Full Name"
-          name="name"
-          value={formData.name}
+          name="name_c"
+          value={formData.name_c}
           onChange={handleChange}
-          error={errors.name}
+          error={errors.name_c}
           placeholder="Enter full name"
           required
         />
 
         <Input
           label="Email"
-          name="email"
+          name="email_c"
           type="email"
-          value={formData.email}
+          value={formData.email_c}
           onChange={handleChange}
-          error={errors.email}
+          error={errors.email_c}
           placeholder="Enter email address"
           required
         />
 
         <Input
           label="Phone"
-          name="phone"
+          name="phone_c"
           type="tel"
-          value={formData.phone}
+          value={formData.phone_c}
           onChange={handleChange}
-          error={errors.phone}
+          error={errors.phone_c}
           placeholder="Enter phone number"
           required
         />
 
         <Input
           label="Company"
-          name="company"
-          value={formData.company}
+          name="company_c"
+          value={formData.company_c}
           onChange={handleChange}
-          error={errors.company}
+          error={errors.company_c}
           placeholder="Enter company name"
           required
+        />
+
+        <Input
+          label="Science Marks"
+          name="science_marks_c"
+          type="number"
+          value={formData.science_marks_c}
+          onChange={handleChange}
+          error={errors.science_marks_c}
+          placeholder="Enter science marks"
         />
 
         <Input
