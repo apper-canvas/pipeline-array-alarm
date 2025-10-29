@@ -14,8 +14,9 @@ const [formData, setFormData] = useState({
     notes_c: "",
     photo_url_c: "",
     science_marks_c: "",
-    maths_marks_c: "",
-chemistry_marks_c: "",
+maths_marks_c: "",
+    chemistry_marks_c: "",
+    physics_marks_c: "",
     history_marks_c: "",
     drawing_marks_c: ""
   });
@@ -36,6 +37,7 @@ notes_c: contact.notes_c || "",
         science_marks_c: contact.science_marks_c || "",
 maths_marks_c: contact.maths_marks_c || "",
 chemistry_marks_c: contact.chemistry_marks_c || "",
+        physics_marks_c: contact.physics_marks_c || "",
         history_marks_c: contact.history_marks_c || "",
         drawing_marks_c: contact.drawing_marks_c || ""
       });
@@ -89,7 +91,10 @@ if (formData.maths_marks_c && isNaN(formData.maths_marks_c)) {
 if (formData.chemistry_marks_c && isNaN(formData.chemistry_marks_c)) {
       newErrors.chemistry_marks_c = "Chemistry marks must be a valid number";
     }
-if (formData.history_marks_c && isNaN(formData.history_marks_c)) {
+    if (formData.physics_marks_c && isNaN(formData.physics_marks_c)) {
+      newErrors.physics_marks_c = "Physics marks must be a valid number";
+    }
+    if (formData.history_marks_c && isNaN(formData.history_marks_c)) {
       newErrors.history_marks_c = "History marks must be a valid number";
     }
     
@@ -117,6 +122,7 @@ const contactData = {
         science_marks_c: formData.science_marks_c ? parseInt(formData.science_marks_c) : null,
 maths_marks_c: formData.maths_marks_c ? parseInt(formData.maths_marks_c) : null,
 chemistry_marks_c: formData.chemistry_marks_c ? parseInt(formData.chemistry_marks_c) : null,
+        physics_marks_c: formData.physics_marks_c ? parseInt(formData.physics_marks_c) : null,
         history_marks_c: formData.history_marks_c ? parseInt(formData.history_marks_c) : null,
         drawing_marks_c: formData.drawing_marks_c ? parseInt(formData.drawing_marks_c) : null
       };
@@ -194,13 +200,21 @@ return (
           placeholder="Enter maths marks"
         />
         <Input
-          label="Chemistry Marks"
+label="Chemistry Marks"
           type="text"
           value={formData.chemistry_marks_c}
           onChange={(e) => handleChange("chemistry_marks_c", e.target.value)}
           error={errors.chemistry_marks_c}
           placeholder="Enter chemistry marks"
-/>
+        />
+        <Input
+          label="Physics Marks"
+          type="text"
+          value={formData.physics_marks_c}
+          onChange={(e) => handleChange("physics_marks_c", e.target.value)}
+          error={errors.physics_marks_c}
+          placeholder="Enter physics marks"
+        />
         
         <Input
           label="History Marks"
