@@ -72,7 +72,7 @@ async create(contactData) {
       const apperClient = getApperClient();
       
       // Only include Updateable fields
-const payload = {
+      const payload = {
         records: [{
           name_c: contactData.name_c || "",
           email_c: contactData.email_c || "",
@@ -80,12 +80,7 @@ const payload = {
           company_c: contactData.company_c || "",
           tags_c: contactData.tags_c || "",
           notes_c: contactData.notes_c || "",
-          photo_url_c: contactData.photo_url_c || "",
-          science_marks_c: contactData.science_marks_c || null,
-          maths_marks_c: contactData.maths_marks_c || null,
-          chemistry_marks_c: contactData.chemistry_marks_c || null,
-          history_marks_c: contactData.history_marks_c || null,
-          drawing_marks_c: contactData.drawing_marks_c || null
+          photo_url_c: contactData.photo_url_c || ""
         }]
       };
 
@@ -108,46 +103,35 @@ const payload = {
         const createdContact = successful[0].data;
 
         // Sync contact to CompanyHub in background
-// Check if contact meets criteria for CompanyHub sync (both marks > 60)
-        const scienceMarks = createdContact.science_marks_c || 0;
-        const mathsMarks = createdContact.maths_marks_c || 0;
-        const shouldSync = scienceMarks > 60 && mathsMarks > 60;
+        try {
+          const { ApperClient } = window.ApperSDK;
+          const syncClient = new ApperClient({
+            apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+            apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+          });
 
-        if (shouldSync) {
-          try {
-            const { ApperClient } = window.ApperSDK;
-            const syncClient = new ApperClient({
-              apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-              apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-            });
-
-            const syncResponse = await syncClient.functions.invoke(
-              import.meta.env.VITE_SYNC_CONTACT_TO_COMPANYHUB,
-              {
-                body: JSON.stringify({
-                  name_c: createdContact.name_c,
-                  email_c: createdContact.email_c,
-                  phone_c: createdContact.phone_c,
-                  company_c: createdContact.company_c,
-                  tags_c: createdContact.tags_c,
-                  notes_c: createdContact.notes_c,
-                  science_marks_c: createdContact.science_marks_c,
-                  maths_marks_c: createdContact.maths_marks_c
-                }),
-                headers: {
-                  'Content-Type': 'application/json'
-                }
+          const syncResponse = await syncClient.functions.invoke(
+            import.meta.env.VITE_SYNC_CONTACT_TO_COMPANYHUB,
+            {
+              body: JSON.stringify({
+                name_c: createdContact.name_c,
+                email_c: createdContact.email_c,
+                phone_c: createdContact.phone_c,
+                company_c: createdContact.company_c,
+                tags_c: createdContact.tags_c,
+                notes_c: createdContact.notes_c
+              }),
+              headers: {
+                'Content-Type': 'application/json'
               }
-            );
-
-            if (!syncResponse.success) {
-              console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_SYNC_CONTACT_TO_COMPANYHUB}. The response body is: ${JSON.stringify(syncResponse)}.`);
             }
-          } catch (syncError) {
-            console.info(`apper_info: Got this error in this function: ${import.meta.env.VITE_SYNC_CONTACT_TO_COMPANYHUB}. The error is: ${syncError.message}`);
+          );
+
+          if (!syncResponse.success) {
+            console.info(`apper_info: Got an error in this function: ${import.meta.env.VITE_SYNC_CONTACT_TO_COMPANYHUB}. The response body is: ${JSON.stringify(syncResponse)}.`);
           }
-        } else {
-          console.info(`Contact "${createdContact.name_c}" not synced to CompanyHub. Criteria not met: Science marks (${scienceMarks}) and Maths marks (${mathsMarks}) must both be greater than 60.`);
+        } catch (syncError) {
+          console.info(`apper_info: Got this error in this function: ${import.meta.env.VITE_SYNC_CONTACT_TO_COMPANYHUB}. The error is: ${syncError.message}`);
         }
 
         return createdContact;
