@@ -15,7 +15,8 @@ const [formData, setFormData] = useState({
     photo_url_c: "",
     science_marks_c: "",
     maths_marks_c: "",
-    chemistry_marks_c: ""
+chemistry_marks_c: "",
+    drawing_marks_c: ""
   });
   
   const [errors, setErrors] = useState({});
@@ -32,8 +33,9 @@ setFormData({
 notes_c: contact.notes_c || "",
         photo_url_c: contact.photo_url_c || "",
         science_marks_c: contact.science_marks_c || "",
-        maths_marks_c: contact.maths_marks_c || "",
-        chemistry_marks_c: contact.chemistry_marks_c || ""
+maths_marks_c: contact.maths_marks_c || "",
+        chemistry_marks_c: contact.chemistry_marks_c || "",
+        drawing_marks_c: contact.drawing_marks_c || ""
       });
     }
   }, [contact]);
@@ -82,8 +84,12 @@ if (formData.science_marks_c && isNaN(formData.science_marks_c)) {
 if (formData.maths_marks_c && isNaN(formData.maths_marks_c)) {
       newErrors.maths_marks_c = "Maths marks must be a valid number";
     }
-    if (formData.chemistry_marks_c && isNaN(formData.chemistry_marks_c)) {
+if (formData.chemistry_marks_c && isNaN(formData.chemistry_marks_c)) {
       newErrors.chemistry_marks_c = "Chemistry marks must be a valid number";
+    }
+    
+    if (formData.drawing_marks_c && isNaN(formData.drawing_marks_c)) {
+      newErrors.drawing_marks_c = "Drawing marks must be a valid number";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -104,8 +110,9 @@ const contactData = {
 ...formData,
         tags_c: formData.tags_c,
         science_marks_c: formData.science_marks_c ? parseInt(formData.science_marks_c) : null,
-        maths_marks_c: formData.maths_marks_c ? parseInt(formData.maths_marks_c) : null,
-        chemistry_marks_c: formData.chemistry_marks_c ? parseInt(formData.chemistry_marks_c) : null
+maths_marks_c: formData.maths_marks_c ? parseInt(formData.maths_marks_c) : null,
+        chemistry_marks_c: formData.chemistry_marks_c ? parseInt(formData.chemistry_marks_c) : null,
+        drawing_marks_c: formData.drawing_marks_c ? parseInt(formData.drawing_marks_c) : null
       };
 
       await onSave(contactData);
@@ -187,8 +194,17 @@ return (
           onChange={(e) => handleChange("chemistry_marks_c", e.target.value)}
           error={errors.chemistry_marks_c}
           placeholder="Enter chemistry marks"
+/>
+        
+        <Input
+          label="Drawing Marks"
+          name="drawing_marks_c"
+          type="number"
+          value={formData.drawing_marks_c}
+          onChange={handleChange}
+          error={errors.drawing_marks_c}
+          placeholder="Enter drawing marks"
         />
-
         <Input
           label="Tags"
           name="tags"
