@@ -26,9 +26,9 @@ const isPipelinePage = location.pathname === "/pipeline";
 icon: "BarChart3",
       active: isPipelinePage
     },
-    {
-      label: "Activities",
-      href: "/activities",
+{
+      name: "Activities",
+      path: "/activities",
       icon: "Activity",
       active: isActivitiesPage
     }
