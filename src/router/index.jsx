@@ -6,6 +6,7 @@ import { getRouteConfig } from "@/router/route.utils";
 
 const Contacts = lazy(() => import("@/components/pages/Contacts"));
 const Pipeline = lazy(() => import("@/components/pages/Pipeline"));
+const Activities = lazy(() => import("@/components/pages/Activities"));
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
 const Login = lazy(() => import("@/pages/Login"));
 const Signup = lazy(() => import("@/pages/Signup"));
@@ -71,8 +72,15 @@ const mainRoutes = [
     path: "contacts",
     element: <Contacts />,
   }),
-  createRoute({
+createRoute({
     path: "pipeline",
+    element: <Pipeline />,
+  }),
+  createRoute({
+    path: "activities",
+    element: <Activities />,
+  }),
+  createRoute({
     element: <Pipeline />,
   }),
   createRoute({

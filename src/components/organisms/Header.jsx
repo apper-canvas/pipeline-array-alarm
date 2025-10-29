@@ -11,8 +11,8 @@ const Header = ({ onSearch, searchValue, onAddContact, onAddDeal, onToggleFilter
   const { logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const isContactsPage = location.pathname === "/" || location.pathname === "/contacts";
-  const isPipelinePage = location.pathname === "/pipeline";
-
+const isPipelinePage = location.pathname === "/pipeline";
+  const isActivitiesPage = location.pathname === "/activities";
   const navItems = [
     {
       name: "Contacts",
@@ -23,8 +23,14 @@ const Header = ({ onSearch, searchValue, onAddContact, onAddDeal, onToggleFilter
     {
       name: "Pipeline",
       path: "/pipeline", 
-      icon: "BarChart3",
+icon: "BarChart3",
       active: isPipelinePage
+    },
+    {
+      label: "Activities",
+      href: "/activities",
+      icon: "Activity",
+      active: isActivitiesPage
     }
   ];
 
