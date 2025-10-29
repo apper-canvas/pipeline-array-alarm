@@ -80,7 +80,8 @@ createRoute({
     path: "activities",
     element: <Activities />,
   }),
-  createRoute({
+createRoute({
+    path: "/pipeline",
     element: <Pipeline />,
   }),
   createRoute({
